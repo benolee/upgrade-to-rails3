@@ -3,6 +3,8 @@ ActionController::Routing::Routes.draw do |map|
     list.resources :items
   end
   
+  map.resources :items, :member => {:toggle => :put}
+  
   map.root :controller => 'lists', :action => 'index'
 
   map.connect ':controller/:action/:id'

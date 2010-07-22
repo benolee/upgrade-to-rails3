@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_filter :find_list
+  before_filter :find_list, :except => :toggle
   
   def create
     @item = @list.items.new(params[:item])
@@ -13,6 +13,18 @@ class ItemsController < ApplicationController
         flash[:notice] = 'Item could not be added!'
         format.html { redirect_to(@list) }
         format.xml  { render :xml => @item.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  def toggle
+    @item = Item.find(params[:id])
+    
+    respond_to do |format|
+      if @item.toggle!(:completed)
+        format.js { render :text => @item.completed? }
+      else
+        format.js { render :text => "Failed", :status => 403 }
       end
     end
   end

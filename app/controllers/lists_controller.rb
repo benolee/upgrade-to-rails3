@@ -12,6 +12,9 @@ class ListsController < ApplicationController
     @list = List.find(params[:id])
     @new_item = @list.items.new
     
+    @items = @list.items
+    @items = @items.tagged_with(params[:tag], :on => :categories) unless params[:tag].blank?
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @list }

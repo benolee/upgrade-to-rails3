@@ -1,2 +1,15 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
+$(function() {
+  $('ul.items input[type=checkbox]').change(function() {
+    var box = $(this);
+    box.is(':checked') ? box.attr('checked','') : box.attr('checked','checked');
+    var id = $(this).attr('id').replace('complete_','');
+    $.ajax({
+      url:'/items/' + id + '/toggle',
+      type:'PUT',
+      success:function() {
+        box.is(':checked') ? box.attr('checked','') : box.attr('checked','checked');
+        box.is(':checked') ? box.parent('li').addClass('completed') : box.parent('li').removeClass('completed');
+      }
+    });
+  });
+});

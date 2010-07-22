@@ -1,21 +1,23 @@
-<h1><%=h @list.name %></h1>
+<h1><%= link_to h(@list.name), list_path(@list) %><% unless params[:tag].blank? %> (tagged with <i><%=h params[:tag] %></i><% end %>)</h1>
 
-<% if @list.items.blank? %>
+<% if @items.empty? %>
   <em>No items in this list</em>
 <% else %>
-  <ul>
-    <% @list.items.each do |item| %>
-      <li><%= item.text %> [<%= link_to 'complete', list_item_path(@list, item), :method => :delete %>]</li>
+  <ul class='items'>
+    <% @items.each do |item| %>
+    
+      <li<%= ' class="completed"' if item.completed? %>><%= check_box_tag "complete_#{item.id}", '1', item.completed? %> <span><%=h item.text %></span> [<%= item.categories.collect{|c| link_to(c.name, {:tag => h(c.name)})}.to_sentence %>]</li>
     <% end %>
   </ul>
 <% end %>
 
 <hr noshade />
 
-<p>Add item:</p>
-
 <% form_for([@list, @new_item]) do |f| %>
+  <%= f.label :text, 'Add Item:' %>
   <%= f.text_field :text %>
+  <%= f.label :category_list, 'Categories:' %>
+  <%= f.text_field :category_list %>
   
   <%= f.submit "Add" %>
 <% end %>
