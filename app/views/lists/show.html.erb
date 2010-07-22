@@ -6,7 +6,7 @@
   <ul class='items'>
     <% @items.each do |item| %>
     
-      <li<%= ' class="completed"' if item.completed? %>><%= check_box_tag "complete_#{item.id}", '1', item.completed? %> <span><%=h item.text %></span> [<%= item.categories.collect{|c| link_to(c.name, {:tag => h(c.name)})}.to_sentence %>]</li>
+      <li<%=raw ' class="completed"' if item.completed? %>><%= check_box_tag "complete_#{item.id}", '1', item.completed? %> <span><%= item.text %></span> [<%=raw item.categories.collect{|c| link_to(c.name, {:tag => h(c.name)})}.to_sentence %>]</li>
     <% end %>
   </ul>
 <% end %>

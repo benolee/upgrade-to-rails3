@@ -1,12 +1,13 @@
-ActionController::Routing::Routes.draw do |map|
-  map.resources :lists do |list|
-    list.resources :items
+UpgradeToRails3::Application.routes.draw do
+  resources :lists do
+    resources :items
   end
-  
-  map.resources :items, :member => {:toggle => :put}
-  
-  map.root :controller => 'lists', :action => 'index'
 
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+  resources :items do
+    member do
+      put :toggle
+    end
+  end
+
+  root :to => 'lists#index'
 end
